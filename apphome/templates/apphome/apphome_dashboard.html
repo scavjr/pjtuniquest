@@ -1,0 +1,119 @@
+{% extends "apphome/layout.html" %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+{% if usuario != None %}
+
+<div class="container mb-5">
+    <div class="mt-4">
+        <p> Bem-vindo, {{usuario}}!</p>
+    </div>
+    <form action="{% url 'formquestion' %}" method="GET">
+        {% csrf_token %}
+        {{ form }}
+        <div class="row mb-2">
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Total {{qtd_q}} questões. Veja as atualizações
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse hide" aria-labelledby="headingOne"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <strong>
+                                <div class="card-body">
+                                    <h5 class="card-title">Questões</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Últimas atualizações</h6>
+                                    {% for atual in lista_atual %}
+                                    <p class="card-text ms-3">{{atual.date_publication |date:"dMY H:i" }}h -
+                                        {{atual.descricao}}</p>
+                                    {%endfor%}
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card-body">
+                <h6>Tipo de Questionário</h6>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoquestao" value="1"
+                        id="tipoquestao_1" checked>
+                    <label class="form-check-label" for="tipoquestao_1">
+                        AVA
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoquestao" value="2" id="tipoquestao_2">
+                    <label class="form-check-label" for="tipoquestao_2">
+                        Texto Base
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoquestao" value="3" id="tipoquestao_3">
+                    <label class="form-check-label" for="tipoquestao_3">
+                        Videoaulas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoquestao" value="4" id="tipoquestao_4">
+                    <label class="form-check-label" for="tipoquestao_4">
+                        Slides
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoquestao" value="5" id="tipoquestao_5">
+                    <label class="form-check-label" for="tipoquestao_5">
+                        Outras
+                    </label>
+                </div>
+                <div class="row mt-3">
+                    <label class="h6" for="curso">Curso</label>
+                    <select class="form-select" name="curso" aria-label="curso" id="curso">
+                        {% for curso in cursos %}
+                        <option value="{{curso.0}}">{{curso.1}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <!--  
+                       <div class="row mt-3">
+                        <label class="h6" for="curso">Assunto</label>
+                        <select class="form-select" name="assunto" aria-label="curso" id="curso">
+                            {% for assunto in assuntos%}
+                            <option value="{{assunto.id}}">{{assunto.assuntonome}}</option>
+                            {%endfor%}
+                            <option selected value="todos">Todos</option>
+                        </select>
+                    </div> 
+                    -->
+                <div class="row mt-3 mr-3 pr-3">
+                    <label class="h6" for="semana">Semana</label>
+                    <select class="form-select" name="semana" aria-label="semana" id="semana">
+                        <option selected value="1">Semana 1</option>
+                        <option value="2">Semana 2</option>
+                        <option value="3">Semana 3</option>
+                        <option value="4">Semana 4</option>
+                        <option value="5">Semana 5</option>
+                        <option value="6">Semana 6</option>
+                        <option value="7">Semana 7</option>
+                        <option value="8">Revisão</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-center w-0 mt-3">
+                    <div class="">
+                        <button type="submit" value="Submit" class="btn btn-primary mt-3" name="consultar">Gerar
+                            Questões</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</form>
+</div>
+{%endif%}
+{% endblock %}

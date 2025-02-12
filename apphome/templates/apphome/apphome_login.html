@@ -1,0 +1,66 @@
+{% extends "apphome/layout.html" %}
+{% block title %}
+Login
+{% endblock %}
+{% block content %}
+{% if request.method == 'GET' %}
+<div class="container d-flex justify-content-center mt-4">
+    <div class="card" style="width: 22rem;">
+        <div class="card-body">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {{ form.password.errors }}
+                {{ form.username.errors }}
+                <div class="row justify-content-center">
+                    {{ form.as_p }}
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-4 col-lg-4">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" name="logar">Entrar</button>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-6">
+                        <div class="form-group">
+                            <a class="btn btn-outline-primary" href="{% url 'cadastro' %}">Novo usuário</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endif %}
+{% if request.method == 'POST' %}
+        <div class="container container d-flex justify-content-center mt-4">
+            <div class="card" style="width: 22rem;">
+                <div class="card-body">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {{ form.password.errors }}
+                        {{ form.username.errors }}
+                        <div class="row">
+                            <p class="text-danger">{{msgerro}}</p>
+                            {{ form.as_p }}
+                        </div>
+                        <div class="row row d-flex justify-content-center">
+                            <div class="col-4 col-lg-4">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary" name="logar">Entrar</button>
+                                </div>
+                            </div>
+                        
+                    </form>
+                    <div class="col-6 col-lg-6">
+                        <div class="form-group">
+                            <a class="btn btn-outline-primary" href="{% url 'cadastro' %}">Novo usuário</a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{%endif %}
+{% endblock %}

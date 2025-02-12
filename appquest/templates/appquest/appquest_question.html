@@ -1,0 +1,125 @@
+{% extends "apphome/layout.html" %}
+{% block title %}
+Questão
+{% endblock %}
+{% block content %}
+{% if usuario != None %}
+<div class="ms-4 flex-row mt-4">
+    {% if request.method == 'GET' %}
+    <div class="mt-3">
+       <p class="h3">{{titulo}} </p> 
+    </div>
+    {% if haquestao == 0 %}
+        Ainda não há questões para essa consulta!
+        tente mais tarde
+    {%else%}
+        Há {{haquestao}} questões para praticar. Vamos lá?
+    {%endif%}
+    <form action="" method="post" class="form" name="form_teste">
+        {% csrf_token %}
+        {{form.media}}
+     
+
+        {% for chave, valores in todos.items %}
+        <div class="mb-2 mt-3 mr-3 h5">
+            Questão {{valores.2 }}
+        </div>
+        <div class="question">
+            {{chave | safe}}
+            <div>
+                {% load static %}
+                {% if valores.1 %}
+                <img src="{% static valores.1 %}" alt="My image" width="400">
+                {%endif %}
+            </div>
+        </div>
+        <div class="valores mb-4">
+            {% for valor in valores.0 %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="{{valores.2}}" id="{{valor.id}}"
+                    value="{{valor.id}}">
+                <label class="form-check-label" for="{{valor.id}}">
+                    {{valor.alttexto}}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <div class="row mt-4 justify-content-center ">
+            <div class="col-3 col-md-1">
+                <button type="submit" class="btn btn-primary mb-3">
+                    Enviar
+                </button>
+            </div>
+            <div class="col-3 col-md-1 mb-5">
+                <a class="btn btn-outline-primary " href="{% url 'formquestion' %}">
+                    Voltar
+                </a>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+    {% if request.method == 'POST' %}
+    <div class="flex-row mt-4 me-3">
+        <div class="row">
+            <div class="alert alert-info ms-3 me-3 mt-3" style="width:fit-content">{{textcorr}}</div>
+        </div>
+        {% for rsp in rsplist%}
+        <div class="card mb-3 mt-4">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-7">
+                        <h5 class="card-title">Questão {{rsp.qid_id}}</h5>
+                    </div>
+                    <div class="col-5 d-flex justify-content-end">
+                        <h5 class="card-text"> 
+                            {% if rsp.id == rsp.rspcorreta %}
+                            <h6 style="color:rgb(0, 81, 255)">Correta</h6>
+                            {%else%}
+                            <h6 style="color:rgb(255, 0, 0)"> Errada </h6>
+                            {%endif%}
+                        </h5>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-11">
+                        <h6 class="card-text">{{rsp.qtextq | safe}}</h6>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <p class="card-text">Sua resposta: {{rsp.alttexto}}</p>
+                </div>
+                <div class="row">
+                    <div class="">
+                        <button class="btn-primary mb-2" data-bs-toggle="collapse"
+                            data-bs-target="#demo{{rsp.qid_id}}">Mostrar o gabarito</button>
+                        <div id="demo{{rsp.qid_id}}" class="collapse ml-3">
+                            {{rsp.textomeu}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="">
+                        <button class="btn-primary mb-2 mt-2" data-bs-toggle="collapse"
+                            data-bs-target="#dem{{rsp.qid_id}}">Mostrar a justificativa</button>
+                        <div id="dem{{rsp.qid_id}}" class="collapse ml-3">
+                            {{rsp.justresposta}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+  <div class="row justify-content-center">  
+        <div class="col-3">
+            <a class="btn btn-outline-primary" href="{% url 'formquestion' %}">
+                Voltar
+            </a>
+        </div>
+    </div>
+    {%endif%}
+  
+    {%endif%}
+</div>
+    {% endblock %}

@@ -1,0 +1,41 @@
+{% extends "apphome/layout.html" %}
+{% block title %}
+Cadastro Usuário
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-body">
+            <form method="post">
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <div class="row">
+                    <h1>Registre-se aqui para acesso ao UNIQuest</h1>
+                </div>
+                <div class="row mt-4">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-4 col-lg-1">
+
+                        <div class="form-group">
+                        <button class="btn btn-primary" type="submit" name="submit" value="Register" name="Register"> Registrar</button>
+                    </div>
+                    </div>
+                <div class="col-4 col-lg-1">
+                    <div class="form-group">
+                        <a class="btn btn-outline-primary" href="{% url 'home' %}">Voltar</a>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
